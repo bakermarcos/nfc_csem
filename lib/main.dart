@@ -4,16 +4,16 @@ import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: ReadExampleScreen(),
+    home: NFCHome(),
   ));
 }
 
-class ReadExampleScreen extends StatefulWidget {
+class NFCHome extends StatefulWidget {
   @override
-  _ReadExampleScreenState createState() => _ReadExampleScreenState();
+  _NFCHomeState createState() => _NFCHomeState();
 }
 
-class _ReadExampleScreenState extends State<ReadExampleScreen> {
+class _NFCHomeState extends State<NFCHome> {
   StreamSubscription<NDEFMessage> _stream;
   List<String> strs = List();
 
