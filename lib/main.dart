@@ -126,8 +126,18 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CSEM NFC Reader"),
-        centerTitle: true,
+        title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                  Image.asset(
+                 'images/csembr.png',
+                  fit: BoxFit.contain,
+                  height: 32,
+              ),
+              Container(
+                  padding: const EdgeInsets.all(10.0), child: Text('NFC Reader'))
+            ],
+          ),
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -162,11 +172,14 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                b + '°',
+                b,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 35.0,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 35.0,
                 ),
-              ),)
+              ),
+            )
           ]),
     );
   }

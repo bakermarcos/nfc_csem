@@ -31,6 +31,8 @@ dependencies:
   nfc_in_flutter: 2.0.5
   path_provider: ^1.1.0
   hive: ^1.4.4+1
+  hive_flutter: ^0.3.0+1
+  image_picker: ^0.6.0+3
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +43,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - images/csembr.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
