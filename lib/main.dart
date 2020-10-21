@@ -18,6 +18,7 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
   List<String> strs = List();
 
   String a = "";
+  String b = "";
 
   void _startScanning() {
     setState(() {
@@ -35,12 +36,14 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
           print(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              a = 'ID: ${message.id}\n${record.data}\n$date';
+              a = 'ID: ${message.id}\n$date';
+              b = '${record.data}';
             });
             break;
           } else {
             setState(() {
-              a = 'ID: ${message.id}\n This tag has no temperature.\n$date';
+              a = 'ID: ${message.id}\nThis tag has no temperature.\n$date';
+              b = '${record.data}';
             });
           }
         }
@@ -126,8 +129,8 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
         title: const Text("CSEM NFC Reader"),
         centerTitle: true,
       ),
-      body: Center( child:Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
               child: const Text("Scan",
@@ -135,24 +138,36 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
               color: Colors.blue,
               onPressed: _toggleScan,
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.all(10.0),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  a,
-                  style: TextStyle(color: Colors.white, fontSize: 25.0),
-                ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(12),
               ),
-            )
+              child: Text(
+                a,
+                style: TextStyle(color: Colors.white, fontSize: 25.0),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                b + '°',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 35.0,
+                ),
+              ),)
           ]),
-    ));
+    );
   }
 }
