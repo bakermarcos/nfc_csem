@@ -43,7 +43,7 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
           } else {
             setState(() {
               a = 'ID: ${message.id}\nThis tag has no temperature.\n$date';
-              b = '${record.data}';
+              b = '-';
             });
           }
         }
@@ -86,41 +86,6 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
     super.dispose();
     _stopScanning();
   }
-
-  /*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Read NFC example"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[ListView(
-        shrinkWrap: true,
-        children: <Widget>[RaisedButton(
-        child: const Text("Escanear",
-        style: TextStyle(color: Colors.blue, fontSize: 25.0),),
-        color: Colors.grey[300],
-        onPressed: _toggleScan,
-      ),
-      Padding(padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.all(10.0),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(12), 
-        ),
-        child: Text(a,
-        style: TextStyle(color: Colors.white,
-        fontSize: 25.0),),),
-        )
-       ])
-      ]),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {
