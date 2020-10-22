@@ -1,11 +1,28 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:nfc_csem/history_page.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+import 'entity/tags_entity.dart';
+import 'entity/tags_provider.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _configDatabase();
   runApp(MaterialApp(
     home: NFCHome(),
   ));
+}
+
+_configDatabase() async {
+  final dir = await getApplicationDocumentsDirectory();
+  Hive
+    ..init(dir.path)
+    ..registerAdapter(TagsEntityAdapter());
+
+  await Hive.openBox<TagsEntity>('tags');
 }
 
 class NFCHome extends StatefulWidget {
@@ -17,8 +34,10 @@ class _NFCHomeState extends State<NFCHome> {
   StreamSubscription<NDEFMessage> _stream;
   List<String> strs = List();
 
-  String a = "";
-  String b = "";
+  String id = "";
+  String temperature = "";
+  String timestamp = "";
+  TagsProvider provider = TagsProvider();
 
   void _startScanning() {
     setState(() {
@@ -36,14 +55,18 @@ class _NFCHomeState extends State<NFCHome> {
           print(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              a = 'ID: ${message.id}\n$date';
-              b = '${record.data}';
+              id = 'ID: ${message.id}';
+              timestamp = '$date';
+              temperature = '${record.data}';
+              provider.saveTag(TagsEntity(
+                  id: id, date: timestamp, temperature: temperature));
             });
             break;
           } else {
             setState(() {
-              a = 'ID: ${message.id}\nThis tag has no temperature.\n$date';
-              b = '-';
+              id = 'ID: ${message.id}\nThis tag has no temperature.';
+              timestamp = '$date';
+              temperature = '-';
             });
           }
         }
@@ -92,17 +115,24 @@ class _NFCHomeState extends State<NFCHome> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                  Image.asset(
-                 'images/csembr.png',
-                  fit: BoxFit.contain,
-                  height: 32,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(10.0), child: Text('NFC Reader'))
-            ],
-          ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/csembr.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            Container(
+                padding: const EdgeInsets.all(10.0), child: Text('NFC Reader'))
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.history),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HistoryPage()));
+        },
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +153,7 @@ class _NFCHomeState extends State<NFCHome> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                a,
+                id + '\n' + timestamp,
                 style: TextStyle(color: Colors.white, fontSize: 25.0),
               ),
             ),
@@ -137,7 +167,7 @@ class _NFCHomeState extends State<NFCHome> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                b,
+                temperature,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
