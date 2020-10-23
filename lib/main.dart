@@ -14,6 +14,7 @@ void main() async {
   await _configDatabase();
   runApp(MaterialApp(
     home: NFCHome(),
+    debugShowCheckedModeBanner: false,
   ));
 }
 
