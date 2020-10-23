@@ -17,7 +17,7 @@ class TagsProvider {
     return tags;
   }
 
-  TagsEntity getTagsById(id) {
-    return tags.firstWhere((tags) => tags.id == id, orElse: () => null);
+  TagsEntity getTagsByDate(date) {
+    return tags.firstWhere((tags) => tags.date == date, orElse: () => null);
   }
 }

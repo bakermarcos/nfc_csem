@@ -1,9 +1,15 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:hive/hive.dart';
 import 'package:nfc_csem/entity/tags_entity.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'entity/tags_provider.dart';
+
+enum OptionsOptions { export, delete }
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -16,6 +22,21 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          PopupMenuButton<OptionsOptions>(
+            itemBuilder: (context) => <PopupMenuEntry<OptionsOptions>>[
+              const PopupMenuItem<OptionsOptions>(
+                child: Text('Export to CSV'),
+                value: OptionsOptions.export,
+              ),
+              const PopupMenuItem<OptionsOptions>(
+                child: Text('Delete History'),
+                value: OptionsOptions.delete,
+              )
+            ],
+            onSelected: _options,
+          )
+        ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -25,10 +46,11 @@ class _HistoryPageState extends State<HistoryPage> {
               height: 32,
             ),
             Container(
-                padding: const EdgeInsets.all(10.0), child: Text('Tags History'))
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text('Tags History'))
           ],
         ),
-      ), 
+      ),
       body: ListView.builder(
           padding: EdgeInsets.all(10.0),
           itemCount: provider.tags.length,
@@ -74,13 +96,10 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
         ),
       ),
-      onTap: () {
-        _showOptions(context, index);
-      },
     );
   }
 
-  void _showOptions(BuildContext context, int index) {
+  /*void _showOptions(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -100,7 +119,6 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(color: Colors.red, fontSize: 20.0),
                       ),
                       onPressed: () {
-                        
                         Navigator.pop(context);
                       },
                     ),
@@ -113,8 +131,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         style: TextStyle(color: Colors.red, fontSize: 20.0),
                       ),
                       onPressed: () {
-                        provider.deleteTag(provider.getTagsById(index));
+                        provider.deleteTag(provider.tags[index]);
                         setState(() {
+                          provider.tags.removeAt(index);
                           Navigator.pop(context);
                         });
                       },
@@ -127,98 +146,51 @@ class _HistoryPageState extends State<HistoryPage> {
         );
       },
     );
+  }*/
+
+  void _options(OptionsOptions result) {
+    switch (result) {
+      case OptionsOptions.export:
+        _generateCSV(context);
+        return;
+        break;
+      case OptionsOptions.delete:
+        _deleteHistory(context);
+        return;
+        break;
+    }
+    setState(() {});
   }
 
-    
-    /*MaterialApp(
-      title: 'Tags History',
-      home:Scaffold(
-        appBar: AppBar(
-          title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                'images/csembr.png',
-                fit: BoxFit.contain,
-                height: 32,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(10.0), child: Text('Tags History'))
-           ],
-          ),
-        ), 
-        body: ValueListenableBuilder(
-          valueListenable: Hive.box<TagsEntity>('tags');,
-          builder: (context, Box<TagsEntity> box, _) {
-            if (box.values.isEmpty)
-              return Center(
-                child: Text("No contacts"),
-              );
-            return ListView.builder(
-              itemCount: box.values.length,
-              itemBuilder: (context, index) {
-                TagsEntity currentTag = box.getAt(index);
-                return Card(
-                  clipBehavior: Clip.antiAlias, 
-                  child: InkWell(
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        child: AlertDialog(
-                          content: Text(
-                            "Do you want to delete ${currentTag.id}?",
-                          ),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text("No"),
-                              onPressed: () => Navigator.of(context).pop(),
-                            ),
-                            FlatButton(
-                              child: Text("Yes"),
-                              onPressed: () async {
-                                await box.deleteAt(index);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: 5),
-                          Text(currentContact.name),
-                          SizedBox(height: 5),
-                          Text(currentContact.phoneNumber),
-                          SizedBox(height: 5),
-                          Text("Age: ${currentContact.age}"),
-                          SizedBox(height: 5),
-                          Text("Relationship: $relationship"),
-                          SizedBox(height: 5),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        floatingActionButton: Builder(
-          builder: (context) {
-            return FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddContact()));
-              },
-            );
-          },
-        ),
-      );
-}*/
+  _deleteHistory(context) {
+    setState(() {
+      provider.tagsBox.clear();
+      provider.getTags();
+    });
+  }
+
+  Future<void> _generateCSV(context) async {
+    List<TagsEntity> data = provider.getTags();
+    List<List<String>> csvData = [
+      // headers
+      <String>['id', 'date', 'temperature'],
+      // data
+      ...data.map((item) => [item.id, item.date, item.temperature]),
+    ];
+
+    String csv = const ListToCsvConverter().convert(csvData);
+
+    final String dir = (await getExternalStorageDirectory()).path;
+    final String path = '$dir/temperature_data.csv';
+
+    // create file
+    final File file = File(path);
+    // Save csv string using default configuration
+    // , as field separator
+    // " as text delimiter and
+    // \r\n as eol.
+    await file.writeAsString(csv);
+
+    Share.shareFiles(['$dir/temperature_data.csv'], text: 'Temperature Data');
+  }
 }
