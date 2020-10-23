@@ -1,0 +1,4 @@
+storePassword=csem1234
+keyPassword=csem1234
+keyAlias=key
+storeFile=C:/Users/marcos.baker/key.jks
