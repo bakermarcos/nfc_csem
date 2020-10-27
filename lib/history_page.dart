@@ -44,7 +44,7 @@ class _HistoryPageState extends State<HistoryPage> {
             Image.asset(
               'images/csembr.png',
               fit: BoxFit.contain,
-              height: 32,
+              height: 17,
             ),
             Container(
                 padding: const EdgeInsets.only(left: 10.0),
