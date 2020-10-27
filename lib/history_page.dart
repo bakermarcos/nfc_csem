@@ -29,7 +29,9 @@ class _HistoryPageState extends State<HistoryPage> {
                 value: OptionsOptions.export,
               ),
               const PopupMenuItem<OptionsOptions>(
-                child: Text('Delete History'),
+                child: Text('Delete History',
+                style: TextStyle(color: Colors.red),
+                ),
                 value: OptionsOptions.delete,
               )
             ],
