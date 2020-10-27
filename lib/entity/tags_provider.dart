@@ -10,7 +10,7 @@ class TagsProvider {
   }
 
   void deleteTag(TagsEntity tag) {
-    tagsBox.delete('${tag.id}');
+    tagsBox.delete(tag.key);
   }
 
   List<TagsEntity> getTags() {

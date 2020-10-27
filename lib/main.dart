@@ -169,11 +169,11 @@ class _NFCHomeState extends State<NFCHome> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                temperature,
+                temperature.replaceAll('Current temperature: ', ''),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 35.0,
+                  fontSize: 90.0,
                 ),
               ),
             )

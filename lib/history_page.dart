@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
-import 'package:hive/hive.dart';
 import 'package:nfc_csem/entity/tags_entity.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -62,44 +61,47 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Widget _tagCard(BuildContext context, int index) {
     return GestureDetector(
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      provider.getTags()[index].id ?? '',
-                      style: TextStyle(
-                          fontSize: 23.0, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      provider.getTags()[index].date ?? '',
-                      style: TextStyle(
-                        fontSize: 18.0,
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        provider.getTags()[index].id ?? '',
+                        style: TextStyle(
+                            fontSize: 23.0, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Text(
-                      provider.getTags()[index].temperature ?? '',
-                      style: TextStyle(
-                        fontSize: 18.0,
+                      Text(
+                        provider.getTags()[index].date ?? '',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              )
-            ],
+                      Text(
+                        provider.getTags()[index].temperature ?? '',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.orange[800],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+        onTap: () {
+          _showOptionsTag(context, index);
+        });
   }
 
-  /*void _showOptions(BuildContext context, int index) {
+  void _showOptionsTag(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -115,11 +117,15 @@ class _HistoryPageState extends State<HistoryPage> {
                     padding: EdgeInsets.all(10.0),
                     child: FlatButton(
                       child: Text(
-                        'Export to csv',
-                        style: TextStyle(color: Colors.red, fontSize: 20.0),
+                        'Share Tag Temperature',
+                        style: TextStyle(color: Colors.green, fontSize: 20.0),
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        _shareTemperatureTag(index);
+                        setState(() {
+                          provider.getTags();
+                          Navigator.pop(context);
+                        });
                       },
                     ),
                   ),
@@ -127,13 +133,13 @@ class _HistoryPageState extends State<HistoryPage> {
                     padding: EdgeInsets.all(10.0),
                     child: FlatButton(
                       child: Text(
-                        'Excluir',
+                        'Delete Tag',
                         style: TextStyle(color: Colors.red, fontSize: 20.0),
                       ),
                       onPressed: () {
-                        provider.deleteTag(provider.tags[index]);
+                        _deleteTagslct(provider.getTags()[index]);
                         setState(() {
-                          provider.tags.removeAt(index);
+                          provider.getTags();
                           Navigator.pop(context);
                         });
                       },
@@ -146,7 +152,7 @@ class _HistoryPageState extends State<HistoryPage> {
         );
       },
     );
-  }*/
+  }
 
   void _options(OptionsOptions result) {
     switch (result) {
@@ -160,6 +166,20 @@ class _HistoryPageState extends State<HistoryPage> {
         break;
     }
     setState(() {});
+  }
+
+  _deleteTagslct(TagsEntity tag) {
+    provider.deleteTag(tag);
+    setState(() {
+      provider.getTags();
+    });
+  }
+
+  _shareTemperatureTag(index) {
+    Share.share(provider.getTags()[index].temperature);
+    setState(() {
+      provider.getTags();
+    });
   }
 
   _deleteHistory(context) {
