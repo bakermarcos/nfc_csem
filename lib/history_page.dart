@@ -29,8 +29,9 @@ class _HistoryPageState extends State<HistoryPage> {
                 value: OptionsOptions.export,
               ),
               const PopupMenuItem<OptionsOptions>(
-                child: Text('Delete History',
-                style: TextStyle(color: Colors.red),
+                child: Text(
+                  'Delete History',
+                  style: TextStyle(color: Colors.red),
                 ),
                 value: OptionsOptions.delete,
               )
@@ -163,7 +164,32 @@ class _HistoryPageState extends State<HistoryPage> {
         return;
         break;
       case OptionsOptions.delete:
-        _deleteHistory(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Delete all history?'),
+              content: Text('If you delete history, all data will be lost.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  child: Text('Delete'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _deleteHistory(context);
+                    });
+                  },
+                )
+              ],
+            );
+          },
+        );
         return;
         break;
     }
@@ -197,7 +223,7 @@ class _HistoryPageState extends State<HistoryPage> {
       // headers
       <String>['id', 'date', 'temperature'],
       // data
-      ...data.map((item) => [item.id, item.date, item.temperature]),
+      ...data.map((item) => [item.id, item.date.toString(), item.temperature]),
     ];
 
     String csv = const ListToCsvConverter().convert(csvData);

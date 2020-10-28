@@ -161,8 +161,8 @@ class _NFCHomeState extends State<NFCHome> {
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
+              //margin: EdgeInsets.all(10.0),
+              //padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.orange,
