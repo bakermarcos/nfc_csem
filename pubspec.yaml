@@ -20,6 +20,7 @@ dependencies:
   csv: ^4.0.3
   share: ^0.6.5
   flutter_launcher_icons: ^0.8.1
+  syncfusion_flutter_charts: ^18.3.44
 
 dev_dependencies:
   flutter_test:

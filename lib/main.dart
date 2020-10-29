@@ -5,7 +5,6 @@ import 'package:nfc_csem/history_page.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 import 'entity/tags_entity.dart';
 import 'entity/tags_provider.dart';
 
@@ -35,7 +34,6 @@ class NFCHome extends StatefulWidget {
 class _NFCHomeState extends State<NFCHome> {
   StreamSubscription<NDEFMessage> _stream;
   List<String> strs = List();
-
   String id = "";
   String temperature = "";
   String timestamp = "";
@@ -161,15 +159,15 @@ class _NFCHomeState extends State<NFCHome> {
             ),
             Container(
               alignment: Alignment.center,
-              //margin: EdgeInsets.all(10.0),
-              //padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Colors.orange,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                temperature.replaceAll('Current temperature: ', ''),
+                temperature.substring(22,26),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
