@@ -21,6 +21,7 @@ dependencies:
   share: ^0.6.5
   flutter_launcher_icons: ^0.8.1
   syncfusion_flutter_charts: ^18.3.44
+  floating_action_bubble: 1.0.9
 
 dev_dependencies:
   flutter_test:

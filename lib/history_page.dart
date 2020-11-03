@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:csv/csv.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:nfc_csem/entity/tags_entity.dart';
@@ -15,8 +16,22 @@ class HistoryPage extends StatefulWidget {
   _HistoryPageState createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
+class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin{
   TagsProvider provider = TagsProvider();
+  Animation<double> _animation;
+  AnimationController _animationController;
+
+  @override
+  void initState(){   
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+    final curvedAnimation = CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation); 
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +67,47 @@ class _HistoryPageState extends State<HistoryPage> {
                 child: Text('Tags History'))
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: FloatingActionBubble(
+        items: <Bubble>[
+          // Floating action menu item
+          Bubble(
+            title:"Home",
+            iconColor :Colors.white,
+            bubbleColor : Colors.blue,
+            icon:Icons.home_filled,
+            titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
+            onPress: () {
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+            },
+          ),
+          //Floating action menu item
+          Bubble(
+            title:"Charts",
+            iconColor :Colors.white,
+            bubbleColor : Colors.blue,
+            icon:Icons.show_chart_rounded,
+            titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
+            onPress: () {
+              Navigator.pushNamed(context, '/chart');
+            },
+          ),
+        ],
+        animation: _animation,
+
+        // On pressed change animation state
+        onPress: () => _animationController.isCompleted
+            ? _animationController.reverse()
+            : _animationController.forward(),
+        
+        // Floating Action button Icon color
+        iconColor: Colors.blue,
+
+        // Flaoting Action button Icon 
+        icon: AnimatedIcons.list_view,
+
+        
       ),
       body: ListView.builder(
           padding: EdgeInsets.all(10.0),
