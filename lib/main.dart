@@ -117,14 +117,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin{
     });
   }
 
-  void _toggleScan() {
-    if (_stream == null) {
-      _startScanning();
-    } else {
-      _stopScanning();
-    }
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -199,7 +191,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin{
                   color: Colors.blue,
                   onPressed: () {
                     if (_stream == null) {
-                      _toggleScan();
+                      _startScanning();
                       
                     } else {
                       _stopScanning();
