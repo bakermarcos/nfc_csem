@@ -193,11 +193,19 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin{
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
-              child: const Text("Scan",
-                  style: TextStyle(color: Colors.white, fontSize: 20.0)),
-              color: Colors.blue,
-              onPressed: _toggleScan,
-            ),
+              child: Text((_stream == null ? "Scan" : "Stop scanning"),
+                  style: TextStyle(color: Colors.white, fontSize: 20.0)
+                  ),
+                  color: Colors.blue,
+                  onPressed: () {
+                    if (_stream == null) {
+                      _toggleScan();
+                      
+                    } else {
+                      _stopScanning();
+                    }
+                  },
+                ),
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.all(10.0),
