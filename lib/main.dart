@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:app_settings/app_settings.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:nfc_csem/charts_page.dart';
 import 'package:nfc_csem/history_page.dart';
@@ -137,7 +139,8 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
         builder: (context) {
           return AlertDialog(
             title: Text('You want to go to the CSEM Brasil website?'),
-            content: Text('CSEM Brasil is a research and development center, generating innovative solutions for the market. If you go to the website you will get more information.'),
+            content: Text(
+                'CSEM Brasil is a research and development center, generating innovative solutions for the market. If you go to the website you will get more information.'),
             actions: <Widget>[
               FlatButton(
                 child: Text('Cancel', style: TextStyle(color: Colors.red)),
@@ -160,13 +163,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
       throw 'Could not launch $url';
     }
   }
-  
-  void _openNFCSettingsConfiguration(){
-    final AndroidIntent intent = const AndroidIntent(
-      action: 'action_nfc_settings',
-    );
-    intent.launch();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,9 +170,11 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: _openNFCSettingsConfiguration,
+            onPressed: () {
+              AppSettings.openNFCSettings();
+            },
             icon: Icon(Icons.nfc_rounded),
-            )
+          )
         ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -194,7 +192,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionBubble(
         items: <Bubble>[
-          // Floating action menu item
+          // Floating action chart item
           Bubble(
             title: "Charts",
             iconColor: Colors.white,
@@ -206,7 +204,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
               Navigator.pushNamed(context, '/chart');
             },
           ),
-          //Floating action menu item
+          //Floating action history item
           Bubble(
             title: "History",
             iconColor: Colors.white,
