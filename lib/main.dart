@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:nfc_csem/charts_page.dart';
 import 'package:nfc_csem/history_page.dart';
@@ -10,7 +9,6 @@ import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:android_intent/android_intent.dart';
 
 import 'entity/tags_entity.dart';
 import 'entity/tags_provider.dart';
