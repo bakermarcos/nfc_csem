@@ -55,10 +55,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           )
         ],
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'images/csembr.png',
+              alignment: Alignment.center,
               fit: BoxFit.contain,
               height: 17,
             ),
@@ -90,6 +91,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             icon:Icons.show_chart_rounded,
             titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
             onPress: () {
+              _animationController.reverse();
               Navigator.pushNamed(context, '/chart');
             },
           ),
@@ -228,7 +230,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               content: Text('If you delete history, all data will be lost.'),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Cancel'),
+                  child: Text('Cancel', style: TextStyle(color: Colors.red)),
                   onPressed: () {
                     Navigator.pop(context);
                   },

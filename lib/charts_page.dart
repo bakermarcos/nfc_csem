@@ -35,6 +35,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
             children: [
               Image.asset(
                 'images/csembr.png',
+                alignment: Alignment.center,
                 fit: BoxFit.contain,
                 height: 17,
               ),
@@ -66,6 +67,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
               icon: Icons.history,
               titleStyle: TextStyle(fontSize: 16, color: Colors.white),
               onPress: () {
+                _animationController.reverse();
                 Navigator.pushNamed(context, '/history');
               },
             ),

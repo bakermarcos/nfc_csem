@@ -22,6 +22,9 @@ dependencies:
   flutter_launcher_icons: ^0.8.1
   syncfusion_flutter_charts: ^18.3.44
   floating_action_bubble: 1.0.9
+  url_launcher: ^5.7.10
+  wakelock: ^0.2.1+1
+  android_intent: ^0.3.7+7
 
 dev_dependencies:
   flutter_test:
@@ -39,5 +42,6 @@ flutter_icons:
 flutter:
   assets:
     - images/csembr.png
+    - images/csem.png
 
   uses-material-design: true
