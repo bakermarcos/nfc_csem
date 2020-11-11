@@ -3,13 +3,13 @@
 
 workflows:
     ios-flutter:
-        name: iOS App with Flutter Module
+        name: nfc_csem
         environment:
             vars:
-                FLUTTER_MODULE_DIR: "{{ ADD YOUR PATH HERE }}"
-                HOST_IOS_APP_DIR: "{{ ADD YOUR PATH HERE }}"
-                XCODE_PROJECT: "{{ ADD WORKSPACE NAME HERE }}"
-                XCODE_SCHEME: "{{ ADD SCHEME NAME HERE }}"
+                FLUTTER_MODULE_DIR: "F:\APP\nfc_csem"
+                HOST_IOS_APP_DIR: "F:\APP\nfc_csem"
+                XCODE_PROJECT: "nfc_csem"
+                XCODE_SCHEME: "nfc_csem"
             xcode: edge
             cocoapods: default
             flutter: stable
