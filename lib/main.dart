@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:nfc_csem/charts_page.dart';
 import 'package:nfc_csem/history_page.dart';
@@ -84,6 +85,9 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
               id = 'ID: ${message.id}';
               timestamp = '$date';
               temperature = '${record.data}';
+              temperature = temperature.replaceAll('Current temperature: ', '');
+              temperature = temperature.replaceAll('C', '');
+              temperature = temperature + '°C';
               provider.saveTag(TagsEntity(
                   id: id, date: timestamp, temperature: temperature));
             });
@@ -164,6 +168,10 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -180,7 +188,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             Image.asset(
               'images/csembr.png',
               fit: BoxFit.contain,
-              height: 17,
+              height: MediaQuery.of(context).size.height * 0.02,
             ),
             Container(
                 padding: const EdgeInsets.all(10.0), child: Text('NFC Reader'))
@@ -196,7 +204,9 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             iconColor: Colors.white,
             bubbleColor: Colors.blue,
             icon: Icons.show_chart_rounded,
-            titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+            titleStyle: TextStyle(
+                fontSize: MediaQuery.of(context).size.height * 0.02,
+                color: Colors.white),
             onPress: () {
               _animationController.reverse();
               Navigator.pushNamed(context, '/chart');
@@ -208,7 +218,9 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             iconColor: Colors.white,
             bubbleColor: Colors.blue,
             icon: Icons.history,
-            titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+            titleStyle: TextStyle(
+                fontSize: MediaQuery.of(context).size.height * 0.02,
+                color: Colors.white),
             onPress: () {
               _animationController.reverse();
               Navigator.pushNamed(context, '/history');
@@ -229,7 +241,9 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
         icon: AnimatedIcons.list_view,
       ),
       body: Column(children: <Widget>[
-        Padding(padding: EdgeInsets.only(top: 80.0)),
+        Padding(
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1)),
         GestureDetector(
           child: Image.asset(
             'images/csem.png',
@@ -239,10 +253,14 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           ),
           onTap: _launchCsemSite,
         ),
-        Padding(padding: EdgeInsets.only(top: 80.0)),
+        Padding(
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1)),
         RaisedButton(
           child: Text((_stream == null ? "Scan" : "Stop scanning"),
-              style: TextStyle(color: Colors.white, fontSize: 20.0)),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.height * 0.027)),
           color: Colors.blue,
           onPressed: () {
             if (_stream == null) {
@@ -263,7 +281,9 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           ),
           child: Text(
             id + '\n' + timestamp,
-            style: TextStyle(color: Colors.white, fontSize: 25.0),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: MediaQuery.of(context).size.height * 0.034),
           ),
         ),
         Container(
@@ -276,11 +296,11 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            temperature.replaceAll('Current temperature: ', ''),
+            temperature,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 90.0,
+              fontSize: MediaQuery.of(context).size.height * 0.13,
             ),
           ),
         )

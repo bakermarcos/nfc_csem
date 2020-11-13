@@ -61,7 +61,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               'images/csembr.png',
               alignment: Alignment.center,
               fit: BoxFit.contain,
-              height: 17,
+              height: MediaQuery.of(context).size.height*0.02,
             ),
             Container(
                 padding: const EdgeInsets.only(left: 10.0),
@@ -78,7 +78,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             iconColor :Colors.white,
             bubbleColor : Colors.blue,
             icon:Icons.home_filled,
-            titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
+            titleStyle:TextStyle(fontSize: MediaQuery.of(context).size.height*0.02, color: Colors.white),
             onPress: () {
               Navigator.popUntil(context, ModalRoute.withName('/'));
             },
@@ -89,7 +89,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             iconColor :Colors.white,
             bubbleColor : Colors.blue,
             icon:Icons.show_chart_rounded,
-            titleStyle:TextStyle(fontSize: 16 , color: Colors.white),
+            titleStyle:TextStyle(fontSize: MediaQuery.of(context).size.height*0.02 , color: Colors.white),
             onPress: () {
               _animationController.reverse();
               Navigator.pushNamed(context, '/chart');
@@ -135,18 +135,18 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                       Text(
                         provider.getTags()[index].id ?? '',
                         style: TextStyle(
-                            fontSize: 23.0, fontWeight: FontWeight.bold),
+                            fontSize: MediaQuery.of(context).size.height*0.03, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         provider.getTags()[index].date ?? '',
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: MediaQuery.of(context).size.height*0.024,
                         ),
                       ),
                       Text(
                         provider.getTags()[index].temperature ?? '',
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: MediaQuery.of(context).size.height*0.024,
                           color: Colors.orange[800],
                         ),
                       )
@@ -179,7 +179,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                     child: FlatButton(
                       child: Text(
                         'Share Tag Temperature',
-                        style: TextStyle(color: Colors.green, fontSize: 20.0),
+                        style: TextStyle(color: Colors.green, fontSize: MediaQuery.of(context).size.height*0.027),
                       ),
                       onPressed: () {
                         _shareTemperatureTag(index);
@@ -195,7 +195,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                     child: FlatButton(
                       child: Text(
                         'Delete Tag',
-                        style: TextStyle(color: Colors.red, fontSize: 20.0),
+                        style: TextStyle(color: Colors.red, fontSize: MediaQuery.of(context).size.height*0.027),
                       ),
                       onPressed: () {
                         _deleteTagslct(provider.getTags()[index]);

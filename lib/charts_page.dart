@@ -37,7 +37,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
                 'images/csembr.png',
                 alignment: Alignment.center,
                 fit: BoxFit.contain,
-                height: 17,
+                height: MediaQuery.of(context).size.height*0.02,
               ),
               Container(
                   padding: const EdgeInsets.only(left: 10.0),
@@ -54,7 +54,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
               iconColor: Colors.white,
               bubbleColor: Colors.blue,
               icon: Icons.home,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02, color: Colors.white),
               onPress: () {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
@@ -65,7 +65,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
               iconColor: Colors.white,
               bubbleColor: Colors.blue,
               icon: Icons.history,
-              titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+              titleStyle: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02, color: Colors.white),
               onPress: () {
                 _animationController.reverse();
                 Navigator.pushNamed(context, '/history');
@@ -98,7 +98,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
                   dataSource: provider.getTags(),
                   xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
                   yValueMapper: (TagsEntity tagsEntity, _) => double.parse(
-                      '${tagsEntity.temperature.substring(22, 26)}'),
+                      '${tagsEntity.temperature.substring(0, 5)}'),
                   // Enable data label
                   dataLabelSettings: DataLabelSettings(isVisible: true))
             ]));
