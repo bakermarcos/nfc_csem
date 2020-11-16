@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           print("Read empty NDEF message");
           return;
         }
-        print("Read NDEF message with ${message.records.length} records");
         for (NDEFRecord record in message.records) {
           strs.add(record.data);
           print(record.data);
