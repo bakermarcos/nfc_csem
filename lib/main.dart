@@ -78,6 +78,10 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             .listen((NDEFMessage message) {
           if (message.isEmpty) {
             print("Read empty NDEF message");
+            setState(() {
+              id = 'Empty Tag';
+              temperature = '-';
+            });
             return;
           }
           for (NDEFRecord record in message.records) {
@@ -232,7 +236,10 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             ),
             Container(
                 padding: const EdgeInsets.only(left: 2.0),
-                child: Text('NFC Reader', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
+                child: Text('NFC Reader',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height * 0.028,
+                    )))
           ],
         ),
       ),
