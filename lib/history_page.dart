@@ -64,8 +64,8 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               height: MediaQuery.of(context).size.height*0.02,
             ),
             Container(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text('Tags History'))
+                padding: const EdgeInsets.only(left: 2.0),
+                child: Text('Tags History', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
           ],
         ),
       ),

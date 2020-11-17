@@ -40,8 +40,8 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
                 height: MediaQuery.of(context).size.height*0.02,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Text('Tags Chart'))
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: Text('Tags Chart', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
             ],
           ),
         ),

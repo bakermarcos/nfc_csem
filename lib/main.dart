@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:nfc_csem/charts_page.dart';
 import 'package:nfc_csem/history_page.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
@@ -44,6 +45,7 @@ class NFCHome extends StatefulWidget {
 }
 
 class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
+  ValueNotifier<dynamic> result = ValueNotifier(null);
   StreamSubscription<NDEFMessage> _stream;
   List<String> strs = List();
   String id = "";
@@ -68,54 +70,87 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
 
   void _startScanning() {
     Wakelock.enable();
+    var date = DateTime.now();
     setState(() {
-      _stream = NFC
-          .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
-          .listen((NDEFMessage message) {
-        var date = DateTime.now();
-        if (message.isEmpty) {
-          print("Read empty NDEF message");
-          return;
-        }
-        for (NDEFRecord record in message.records) {
+      if (Platform.isAndroid) {
+        _stream = NFC
+            .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
+            .listen((NDEFMessage message) {
+          if (message.isEmpty) {
+            print("Read empty NDEF message");
+            return;
+          }
+          for (NDEFRecord record in message.records) {
+            strs.add(record.data);
+            print(record.data);
+            if ((record.data != null) &&
+                (record.data.contains("temperature"))) {
+              setState(() {
+                id = 'ID: ${message.id}';
+                timestamp = '$date';
+                temperature = '${record.data}';
+                temperature =
+                    temperature.replaceAll('Current temperature: ', '');
+                temperature = temperature.replaceAll('C', '');
+                temperature = temperature + '°C';
+                temperature.trim();
+                provider.saveTag(TagsEntity(
+                    id: id, date: timestamp, temperature: temperature));
+              });
+              break;
+            } else {
+              setState(() {
+                id = 'ID: ${message.id}\nThis tag has no temperature.';
+                timestamp = '$date';
+                temperature = '-';
+              });
+            }
+          }
+        }, onError: (error) {
+          setState(() {
+            _stream = null;
+          });
+          if (error is NFCUserCanceledSessionException) {
+            print("user canceled");
+          } else if (error is NFCSessionTimeoutException) {
+            print("session timed out");
+          } else {
+            print("error: $error");
+          }
+        }, onDone: () {
+          setState(() {
+            _stream = null;
+          });
+        });
+      } else {
+        _tagRead();
+        print('${result.value}');
+
+        for (NDEFRecord record in result.value) {
           strs.add(record.data);
           print(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'ID: ${message.id}';
+              id = 'ID: ${record.id}';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
               temperature = temperature.replaceAll('C', '');
               temperature = temperature + '°C';
+              temperature.trim();
               provider.saveTag(TagsEntity(
                   id: id, date: timestamp, temperature: temperature));
             });
             break;
           } else {
             setState(() {
-              id = 'ID: ${message.id}\nThis tag has no temperature.';
+              id = 'ID: ${record.id}\nThis tag has no temperature.';
               timestamp = '$date';
               temperature = '-';
             });
           }
         }
-      }, onError: (error) {
-        setState(() {
-          _stream = null;
-        });
-        if (error is NFCUserCanceledSessionException) {
-          print("user canceled");
-        } else if (error is NFCSessionTimeoutException) {
-          print("session timed out");
-        } else {
-          print("error: $error");
-        }
-      }, onDone: () {
-        setState(() {
-          _stream = null;
-        });
-      });
+      }
     });
   }
 
@@ -131,6 +166,13 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     _stopScanning();
+  }
+
+  void _tagRead() {
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      result.value = tag.data;
+      NfcManager.instance.stopSession();
+    });
   }
 
   _launchCsemSite() async {
@@ -168,10 +210,8 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -191,7 +231,8 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             Container(
-                padding: const EdgeInsets.all(10.0), child: Text('NFC Reader'))
+                padding: const EdgeInsets.only(left: 2.0),
+                child: Text('NFC Reader', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
           ],
         ),
       ),
@@ -263,6 +304,8 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
                   fontSize: MediaQuery.of(context).size.height * 0.027)),
           color: Colors.blue,
           onPressed: () {
+            //MediaQuery.of(context).size.width = 411.42857142857144
+            //MediaQuery.of(context).size.height = 731.4285714285714
             if (_stream == null) {
               _startScanning();
             } else {
