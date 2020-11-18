@@ -72,7 +72,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
     var date = DateTime.now();
     setState(() {
         _stream = NFC
-            .readNDEF(throwOnUserCancel: false, alertMessage: "Custom message with readNDEF#alertMessage")
+            .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
             .listen((NDEFMessage message) {
           if (message.isEmpty) {
             print("Read empty NDEF message");
