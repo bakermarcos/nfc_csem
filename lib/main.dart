@@ -69,7 +69,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
 
   void _startScanning() {
     Wakelock.enable();
-    var date = DateTime.now();
     setState(() {
       _stream = NFC
           .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
@@ -83,6 +82,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           return;
         }
         for (NDEFRecord record in message.records) {
+          var date = DateTime.now();
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
