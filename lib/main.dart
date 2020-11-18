@@ -8,7 +8,6 @@ import 'package:hive/hive.dart';
 import 'package:nfc_csem/charts_page.dart';
 import 'package:nfc_csem/history_page.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
-import 'package:nfc_manager/nfc_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
@@ -72,9 +71,8 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
     Wakelock.enable();
     var date = DateTime.now();
     setState(() {
-      if (Platform.isAndroid) {
         _stream = NFC
-            .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
+            .readNDEF(throwOnUserCancel: false, alertMessage: "Custom message with readNDEF#alertMessage")
             .listen((NDEFMessage message) {
           if (message.isEmpty) {
             print("Read empty NDEF message");
@@ -86,7 +84,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           }
           for (NDEFRecord record in message.records) {
             strs.add(record.data);
-            print(record.data);
             if ((record.data != null) &&
                 (record.data.contains("temperature"))) {
               setState(() {
@@ -126,35 +123,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             _stream = null;
           });
         });
-      } else {
-        _tagRead();
-        print('${result.value}');
-
-        for (NDEFRecord record in result.value) {
-          strs.add(record.data);
-          print(record.data);
-          if ((record.data != null) && (record.data.contains("temperature"))) {
-            setState(() {
-              id = 'ID: ${record.id}';
-              timestamp = '$date';
-              temperature = '${record.data}';
-              temperature = temperature.replaceAll('Current temperature: ', '');
-              temperature = temperature.replaceAll('C', '');
-              temperature = temperature + '°C';
-              temperature.trim();
-              provider.saveTag(TagsEntity(
-                  id: id, date: timestamp, temperature: temperature));
-            });
-            break;
-          } else {
-            setState(() {
-              id = 'ID: ${record.id}\nThis tag has no temperature.';
-              timestamp = '$date';
-              temperature = '-';
-            });
-          }
-        }
-      }
     });
   }
 
@@ -170,13 +138,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     _stopScanning();
-  }
-
-  void _tagRead() {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      result.value = tag.data;
-      NfcManager.instance.stopSession();
-    });
   }
 
   _launchCsemSite() async {
@@ -297,7 +258,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             'images/csem.png',
             alignment: Alignment.center,
             fit: BoxFit.fitWidth,
-            height: 60,
+            height: MediaQuery.of(context).size.height * 0.085,
           ),
           onTap: _launchCsemSite,
         ),
