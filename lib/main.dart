@@ -71,58 +71,56 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
     Wakelock.enable();
     var date = DateTime.now();
     setState(() {
-        _stream = NFC
-            .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
-            .listen((NDEFMessage message) {
-          if (message.isEmpty) {
-            print("Read empty NDEF message");
+      _stream = NFC
+          .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
+          .listen((NDEFMessage message) {
+        if (message.isEmpty) {
+          print("Read empty NDEF message");
+          setState(() {
+            id = 'Empty Tag';
+            temperature = '-';
+          });
+          return;
+        }
+        for (NDEFRecord record in message.records) {
+          strs.add(record.data);
+          if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'Empty Tag';
+              id = 'ID: ${message.id}';
+              timestamp = '$date';
+              temperature = '${record.data}';
+              temperature = temperature.replaceAll('Current temperature: ', '');
+              temperature = temperature.replaceAll('C', '');
+              temperature = temperature + '°C';
+              temperature.replaceAll(' ', '');
+              provider.saveTag(TagsEntity(
+                  id: id, date: timestamp, temperature: temperature));
+            });
+            break;
+          } else {
+            setState(() {
+              id = 'ID: ${message.id}\nThis tag has no temperature.';
+              timestamp = '$date';
               temperature = '-';
             });
-            return;
           }
-          for (NDEFRecord record in message.records) {
-            strs.add(record.data);
-            if ((record.data != null) &&
-                (record.data.contains("temperature"))) {
-              setState(() {
-                id = 'ID: ${message.id}';
-                timestamp = '$date';
-                temperature = '${record.data}';
-                temperature =
-                    temperature.replaceAll('Current temperature: ', '');
-                temperature = temperature.replaceAll('C', '');
-                temperature = temperature + '°C';
-                temperature.trim();
-                provider.saveTag(TagsEntity(
-                    id: id, date: timestamp, temperature: temperature));
-              });
-              break;
-            } else {
-              setState(() {
-                id = 'ID: ${message.id}\nThis tag has no temperature.';
-                timestamp = '$date';
-                temperature = '-';
-              });
-            }
-          }
-        }, onError: (error) {
-          setState(() {
-            _stream = null;
-          });
-          if (error is NFCUserCanceledSessionException) {
-            print("user canceled");
-          } else if (error is NFCSessionTimeoutException) {
-            print("session timed out");
-          } else {
-            print("error: $error");
-          }
-        }, onDone: () {
-          setState(() {
-            _stream = null;
-          });
+        }
+      }, onError: (error) {
+        setState(() {
+          _stream = null;
         });
+        if (error is NFCUserCanceledSessionException) {
+          print("user canceled");
+        } else if (error is NFCSessionTimeoutException) {
+          print("session timed out");
+        } else {
+          print("error: $error");
+        }
+      }, onDone: () {
+        setState(() {
+          _stream = null;
+        });
+      });
     });
   }
 
