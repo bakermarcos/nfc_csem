@@ -9,6 +9,10 @@ class TagsProvider {
     return tagsBox.add(tag);
   }
 
+  filterTag(id) {
+    return tags.where((element) => element.id == id);
+  }
+
   void deleteTag(TagsEntity tag) {
     tagsBox.delete(tag.key);
   }
