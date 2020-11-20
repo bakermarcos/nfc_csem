@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:nfc_csem/entity/tags_entity.dart';
+import "package:collection/collection.dart";
 
 class TagsProvider {
   var tagsBox = Hive.box<TagsEntity>('tags');
@@ -10,7 +11,10 @@ class TagsProvider {
   }
 
   filterTag(id) {
-    return tags.where((element) => element.id == id);
+    var newMap = groupBy(tags, (obj) => obj.id).map(
+    (k, v) => MapEntry(k, v.map((item) {  return item;}).toList()));
+    print(newMap);
+    return newMap;
   }
 
   void deleteTag(TagsEntity tag) {
@@ -24,4 +28,5 @@ class TagsProvider {
   TagsEntity getTagsByDate(date) {
     return tags.firstWhere((tags) => tags.date == date, orElse: () => null);
   }
+
 }

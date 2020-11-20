@@ -13,6 +13,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
   TagsProvider provider = TagsProvider();
   Animation<double> _animation;
   AnimationController _animationController;
+  Map b;
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     super.initState();
+     b = provider.filterTag("saddasdada");
   }
 
   @override
@@ -93,14 +95,32 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
             legend: Legend(isVisible: true),
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
-            series: <ChartSeries>[
-              LineSeries<TagsEntity, String>(
-                  dataSource: provider.getTags(),
-                  xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
-                  yValueMapper: (TagsEntity tagsEntity, _) => double.parse(
-                      '${tagsEntity.temperature.substring(0, 5)}'),
-                  // Enable data label
-                  dataLabelSettings: DataLabelSettings(isVisible: true))
-            ]));
+            series: _listas()));
+  }
+
+  _listas(){
+    var a = [
+      LineSeries<TagsEntity, String>(
+        name: 'All tags',
+        dataSource: provider.getTags(),
+        xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
+        yValueMapper: (TagsEntity tagsEntity, _) => double.parse(
+            '${tagsEntity.temperature.substring(0, 5)}'),
+        // Enable data label
+        dataLabelSettings: DataLabelSettings(isVisible: true))
+    ];
+    b.forEach((key, value) =>
+      a.add(
+        LineSeries<TagsEntity, String>(
+          name: key,
+          dataSource: value,
+          xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
+          yValueMapper: (TagsEntity tagsEntity, _) => double.parse(
+              '${tagsEntity.temperature.substring(0, 5)}'),
+          // Enable data label
+          dataLabelSettings: DataLabelSettings(isVisible: true))
+      )
+     );  
+    return a;
   }
 }
