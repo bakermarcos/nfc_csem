@@ -43,7 +43,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
               ),
               Container(
                   padding: const EdgeInsets.only(left: 2.0),
-                  child: Text('Tags Chart', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
+                  child: Text('Gráficos', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
             ],
           ),
         ),
@@ -63,7 +63,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
             ),
             //Floating action menu item
             Bubble(
-              title: "History",
+              title: "Histórico",
               iconColor: Colors.white,
               bubbleColor: Colors.blue,
               icon: Icons.history,
@@ -90,7 +90,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
         body: SfCartesianChart(
             primaryXAxis: CategoryAxis(),
             // Chart title
-            title: ChartTitle(text: 'Temperature by time analyses'),
+            title: ChartTitle(text: 'Análise de temperatura pelo tempo'),
             // Enable legend
             legend: Legend(isVisible: true),
             // Enable tooltip

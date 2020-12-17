@@ -99,7 +99,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             break;
           } else {
             setState(() {
-              id = 'ID: ${message.id}\nThis tag has no temperature.';
+              id = 'ID: ${message.id}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
@@ -145,18 +145,18 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('You want to go to the CSEM Brasil website?'),
+            title: Text('Você quer ir ao website do CSEM Brasil?'),
             content: Text(
-                'CSEM Brasil is a research and development center, generating innovative solutions for the market. If you go to the website you will get more information.'),
+                'CSEM Brasil é um centro de pesquisa e desenvolvimento, gerando soluções inovadoras para o mercado. Vá para o website para mais informações.'),
             actions: <Widget>[
               FlatButton(
-                child: Text('Cancel', style: TextStyle(color: Colors.red)),
+                child: Text('Cancelar', style: TextStyle(color: Colors.red)),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
               FlatButton(
-                child: Text('Go to the website'),
+                child: Text('Ir para website'),
                 onPressed: () async {
                   Navigator.pop(context);
                   await launch(url);
@@ -195,7 +195,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             ),
             Container(
                 padding: const EdgeInsets.only(left: 2.0),
-                child: Text('NFC Reader',
+                child: Text('Leitor NFC',
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.height * 0.028,
                     )))
@@ -207,7 +207,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
         items: <Bubble>[
           // Floating action chart item
           Bubble(
-            title: "Charts",
+            title: "Gráficos",
             iconColor: Colors.white,
             bubbleColor: Colors.blue,
             icon: Icons.show_chart_rounded,
@@ -221,7 +221,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           ),
           //Floating action history item
           Bubble(
-            title: "History",
+            title: "Histórico",
             iconColor: Colors.white,
             bubbleColor: Colors.blue,
             icon: Icons.history,
@@ -264,7 +264,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1)),
         RaisedButton(
-          child: Text((_stream == null ? "Scan" : "Stop scanning"),
+          child: Text((_stream == null ? "Escanear" : "Parar de escanear"),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: MediaQuery.of(context).size.height * 0.027)),

@@ -40,12 +40,12 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           PopupMenuButton<OptionsOptions>(
             itemBuilder: (context) => <PopupMenuEntry<OptionsOptions>>[
               const PopupMenuItem<OptionsOptions>(
-                child: Text('Export to CSV'),
+                child: Text('Exportar para CSV'),
                 value: OptionsOptions.export,
               ),
               const PopupMenuItem<OptionsOptions>(
                 child: Text(
-                  'Delete History',
+                  'Deletar Histórico',
                   style: TextStyle(color: Colors.red),
                 ),
                 value: OptionsOptions.delete,
@@ -65,7 +65,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             ),
             Container(
                 padding: const EdgeInsets.only(left: 2.0),
-                child: Text('Tags History', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
+                child: Text('Histórico de Tags', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
           ],
         ),
       ),
@@ -85,7 +85,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           ),
           //Floating action menu item
           Bubble(
-            title:"Charts",
+            title:"Gráficos",
             iconColor :Colors.white,
             bubbleColor : Colors.blue,
             icon:Icons.show_chart_rounded,
@@ -178,7 +178,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                     padding: EdgeInsets.all(10.0),
                     child: FlatButton(
                       child: Text(
-                        'Share Tag Temperature',
+                        'Compartilhar temperatura da Tag',
                         style: TextStyle(color: Colors.green, fontSize: MediaQuery.of(context).size.height*0.027),
                       ),
                       onPressed: () {
@@ -194,7 +194,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                     padding: EdgeInsets.all(10.0),
                     child: FlatButton(
                       child: Text(
-                        'Delete Tag',
+                        'Deletar Tag',
                         style: TextStyle(color: Colors.red, fontSize: MediaQuery.of(context).size.height*0.027),
                       ),
                       onPressed: () {
@@ -226,17 +226,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Delete all history?'),
-              content: Text('If you delete history, all data will be lost.'),
+              title: Text('Deletar todo histórico?'),
+              content: Text('Se você deletar todo o histórico todos os dados serão perdidos.'),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Cancel', style: TextStyle(color: Colors.red)),
+                  child: Text('Cancelar', style: TextStyle(color: Colors.red)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
                 FlatButton(
-                  child: Text('Delete'),
+                  child: Text('Deletar'),
                   onPressed: () {
                     Navigator.pop(context);
                     setState(() {
