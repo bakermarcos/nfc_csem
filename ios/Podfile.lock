@@ -1,0 +1,52 @@
+PODS:
+  - "app_settings (3.0.0+1)":
+    - Flutter
+  - Flutter (1.0.0)
+  - nfc_in_flutter (1.0.0):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - share (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
+  - wakelock (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
+  - Flutter (from `Flutter`)
+  - nfc_in_flutter (from `.symlinks/plugins/nfc_in_flutter/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - share (from `.symlinks/plugins/share/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
+
+EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
+  Flutter:
+    :path: Flutter
+  nfc_in_flutter:
+    :path: ".symlinks/plugins/nfc_in_flutter/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  share:
+    :path: ".symlinks/plugins/share/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
+
+SPEC CHECKSUMS:
+  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  nfc_in_flutter: c656fbfb1ec5b9d021da87b0c87629d62fd5264d
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  wakelock: bfc7955c418d0db797614075aabbc58a39ab5107
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.9.3
