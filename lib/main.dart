@@ -71,8 +71,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
     Wakelock.enable();
     setState(() {
       _stream = NFC
-          .readNDEF(once: true,
-                            throwOnUserCancel: false,)
+          .readNDEF()
           .listen((NDEFMessage message) {
         if (message.isEmpty) {
           print("Read empty NDEF message");
