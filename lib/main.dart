@@ -264,7 +264,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1)),
         RaisedButton(
-          child: Text((_stream == null ? "Escanear" : "Parar de escanear"),
+          child: Text(("Escanear"), // Text((_stream == null ? "Escanear" : "Parar de escanear"),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: MediaQuery.of(context).size.height * 0.027)),
@@ -272,11 +272,12 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           onPressed: () {
             //MediaQuery.of(context).size.width = 411.42857142857144
             //MediaQuery.of(context).size.height = 731.4285714285714
-            if (_stream == null) {
+            /*if (_stream == null) {
               _startScanning();
             } else {
               _stopScanning();
-            }
+            }*/
+              _startScanning();
           },
         ),
         Container(
