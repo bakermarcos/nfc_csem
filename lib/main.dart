@@ -71,7 +71,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
     Wakelock.enable();
     setState(() {
       _stream = NFC
-          .readNDEF()
+          .readNDEF(once: true)
           .listen((NDEFMessage message) {
         if (message.isEmpty) {
           print("Read empty NDEF message");
@@ -117,7 +117,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           print("error: $error");
         }
       }, onDone: () {
-        setState(() {
+        setState(() { 
           _stream = null;
         });
       });
@@ -149,13 +149,13 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             content: Text(
                 'CSEM Brasil é um centro de pesquisa e desenvolvimento, gerando soluções inovadoras para o mercado. Vá para o website para mais informações.'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Cancelar', style: TextStyle(color: Colors.red)),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text('Ir para website'),
                 onPressed: () async {
                   Navigator.pop(context);
@@ -293,7 +293,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             id + '\n' + timestamp,
             style: TextStyle(
                 color: Colors.white,
-                fontSize: MediaQuery.of(context).size.height * 0.034),
+                fontSize: MediaQuery.of(context).size.height * 0.03),
           ),
         ),
         Container(

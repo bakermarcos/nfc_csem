@@ -176,7 +176,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text(
                         'Compartilhar temperatura da Tag',
                         style: TextStyle(color: Colors.green, fontSize: MediaQuery.of(context).size.height*0.027),
@@ -192,7 +192,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                   ),
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text(
                         'Deletar Tag',
                         style: TextStyle(color: Colors.red, fontSize: MediaQuery.of(context).size.height*0.027),
@@ -229,13 +229,13 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               title: Text('Deletar todo histórico?'),
               content: Text('Se você deletar todo o histórico todos os dados serão perdidos.'),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Cancelar', style: TextStyle(color: Colors.red)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('Deletar'),
                   onPressed: () {
                     Navigator.pop(context);
@@ -262,7 +262,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
   }
 
   _shareTemperatureTag(index) {
-    Share.share(provider.getTags()[index].temperature);
+    Share.share(provider.getTags()[index].toString());
     setState(() {
       provider.getTags();
     });
@@ -286,7 +286,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
 
     String csv = const ListToCsvConverter().convert(csvData);
 
-    final String dir = (await getExternalStorageDirectory()).path;
+    final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/temperature_data.csv';
 
     // create file
