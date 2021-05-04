@@ -262,7 +262,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
   }
 
   _shareTemperatureTag(index) {
-    Share.share(provider.getTags()[index].toString());
+    Share.share(provider.getTags()[index].temperature.toString());
     setState(() {
       provider.getTags();
     });
