@@ -1,4 +1,4 @@
-package br.com.csembrasil.nfc_csem
+package br.com.csembrasil.nfccsem
 
 import io.flutter.embedding.android.FlutterActivity
 
