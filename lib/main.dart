@@ -99,7 +99,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             break;
           } else {
             setState(() {
-              id = 'ID: ${message.id}\nEssa tag não tem dado de temperatura.';
+              id = 'ID: ${record.id}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
