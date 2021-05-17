@@ -83,6 +83,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
         }
         for (NDEFRecord record in message.records) {
           var date = DateTime.now();
+          strs.add(record.id);
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
