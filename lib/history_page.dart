@@ -286,7 +286,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
 
     String csv = const ListToCsvConverter().convert(csvData);
 
-    final String dir = (await getExternalStorageDirectory()).path;
+    final String dir = (await getApplicationDocumentsDirectory()).path;
     final String path = '$dir/temperature_data.csv';
 
     // create file

@@ -47,7 +47,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
   ValueNotifier<dynamic> result = ValueNotifier(null);
   StreamSubscription<NDEFMessage> _stream;
   List<String> strs = List();
-  String id = "";
+  String ide = "";
   String temperature = "";
   String timestamp = "";
   TagsProvider provider = TagsProvider();
@@ -71,12 +71,12 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
     Wakelock.enable();
     setState(() {
       _stream = NFC
-          .readNDEF()
+          .readNDEF(once: true)
           .listen((NDEFMessage message) {
         if (message.isEmpty) {
           print("Read empty NDEF message");
           setState(() {
-            id = 'Empty Tag';
+            ide = 'Empty Tag';
             temperature = '-';
           });
           return;
@@ -86,7 +86,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'ID: ${message.id}';
+              ide = 'ID: ${message.id}';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
@@ -94,12 +94,12 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
               temperature = temperature + '°C';
               temperature.replaceAll(' ', '');
               provider.saveTag(TagsEntity(
-                  id: id, date: timestamp, temperature: temperature));
+                  id: ide, date: timestamp, temperature: temperature));
             });
             break;
           } else {
             setState(() {
-              id = 'ID: ${message.id}\nEssa tag não tem dado de temperatura.';
+              ide = 'ID: ${message.id}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
@@ -289,7 +289,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            id + '\n' + timestamp,
+            ide + '\n' + timestamp,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: MediaQuery.of(context).size.height * 0.034),
