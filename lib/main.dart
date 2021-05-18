@@ -87,7 +87,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'ID: ${record.id.toString()}';
+              id = 'ID: ${message.records.contains('id').toString()}';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
@@ -100,7 +100,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             break;
           } else {
             setState(() {
-              id = 'ID: ${record.id.toString()}\nEssa tag não tem dado de temperatura.';
+              id = 'ID: ${message.records.contains('id').toString()}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
