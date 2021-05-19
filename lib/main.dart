@@ -83,14 +83,10 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
         }
         for (NDEFRecord record in message.records) {
           var date = DateTime.now();
-          var mi = message.id;
-          var ri = record.id;
-          var pi = record.payload.toString();
-          var li = record.data;
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'ID: ${mi}'+'/'+'${ri}'+'/'+'${pi}'+'/'+'${li}';
+              id = 'ID: ${message.tag.id}';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
@@ -103,7 +99,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             break;
           } else {
             setState(() {
-              id = 'ID: ${message.id}\nEssa tag não tem dado de temperatura.';
+              id = 'ID: ${message.tag.id}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
