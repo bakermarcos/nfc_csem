@@ -86,7 +86,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'ID: ${message.tag.id}';
+              id = 'ID: ${message.id.characters}/${message.id.hashCode}/${message.id.runes}/${message.id.codeUnits}/${message.data.codeUnits}/${message.data.hashCode}/${message.data.runes}/${message.data.characters}/';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
