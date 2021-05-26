@@ -73,7 +73,6 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
       _stream = NFC
           .readNDEF(once: true)
           .listen((NDEFMessage message) {
-            id = "ID: ${message.id}";
         if (message.isEmpty) {
           print("Read empty NDEF message");
           setState(() {
@@ -87,7 +86,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              //id = 'ID: ${message.id.characters}';
+              id = 'ID: ${message}';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
@@ -100,7 +99,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             break;
           } else {
             setState(() {
-              id = 'ID: ${message.id}\nEssa tag não tem dado de temperatura.';
+              id = 'ID: ${message}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
