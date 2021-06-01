@@ -11,6 +11,7 @@ import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
 import 'entity/tags_entity.dart';
 import 'entity/tags_provider.dart';
@@ -70,9 +71,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
   void _startScanning() {
     Wakelock.enable();
     setState(() {
-      _stream = NFC
-          .readNDEF(once: true)
-          .listen((NDEFMessage message) {
+      _stream = NFC.readNDEF(once: true).listen((NDEFMessage message) {
         if (message.isEmpty) {
           print("Read empty NDEF message");
           setState(() {
@@ -86,7 +85,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
           strs.add(record.data);
           if ((record.data != null) && (record.data.contains("temperature"))) {
             setState(() {
-              id = 'ID: ' + message.payload;
+              id = 'ID: ${message.payload}';
               timestamp = '$date';
               temperature = '${record.data}';
               temperature = temperature.replaceAll('Current temperature: ', '');
@@ -99,7 +98,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             break;
           } else {
             setState(() {
-              id = 'ID: ' + message.payload + '\nEssa tag não tem dado de temperatura.';
+              id = 'ID: ${message.payload}\nEssa tag não tem dado de temperatura.';
               timestamp = '$date';
               temperature = '-';
             });
@@ -264,7 +263,8 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             padding:
                 EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1)),
         RaisedButton(
-          child: Text(("Escanear"), // Text((_stream == null ? "Escanear" : "Parar de escanear"),
+          child: Text(
+              ("Escanear"), // Text((_stream == null ? "Escanear" : "Parar de escanear"),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: MediaQuery.of(context).size.height * 0.027)),
@@ -277,7 +277,7 @@ class _NFCHomeState extends State<NFCHome> with TickerProviderStateMixin {
             } else {
               _stopScanning();
             }*/
-              _startScanning();
+            _startScanning();
           },
         ),
         Container(
