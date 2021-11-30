@@ -25,7 +25,7 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
         CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     super.initState();
-     b = provider.filterTag("saddasdada");
+    b = provider.filterTag("saddasdada");
   }
 
   @override
@@ -35,15 +35,13 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'images/csembr.png',
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                height: MediaQuery.of(context).size.height*0.02,
-              ),
+              Text("App NFC", style: TextStyle(color: Colors.white)),
               Container(
                   padding: const EdgeInsets.only(left: 2.0),
-                  child: Text('Gráficos', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
+                  child: Text('Gráficos',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.028,
+                      )))
             ],
           ),
         ),
@@ -56,7 +54,9 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
               iconColor: Colors.white,
               bubbleColor: Colors.blue,
               icon: Icons.home,
-              titleStyle: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02, color: Colors.white),
+              titleStyle: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height * 0.02,
+                  color: Colors.white),
               onPress: () {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
@@ -67,7 +67,9 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
               iconColor: Colors.white,
               bubbleColor: Colors.blue,
               icon: Icons.history,
-              titleStyle: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02, color: Colors.white),
+              titleStyle: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height * 0.02,
+                  color: Colors.white),
               onPress: () {
                 _animationController.reverse();
                 Navigator.pushNamed(context, '/history');
@@ -98,29 +100,25 @@ class _ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
             series: _listas()));
   }
 
-  _listas(){
+  _listas() {
     var a = [
       LineSeries<TagsEntity, String>(
-        name: 'All tags',
-        dataSource: provider.getTags(),
-        xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
-        yValueMapper: (TagsEntity tagsEntity, _) => double.parse(
-            '${tagsEntity.temperature.substring(0, 5)}'),
-        // Enable data label
-        dataLabelSettings: DataLabelSettings(isVisible: true))
-    ];
-    b.forEach((key, value) =>
-      a.add(
-        LineSeries<TagsEntity, String>(
-          name: key,
-          dataSource: value,
+          name: 'All tags',
+          dataSource: provider.getTags(),
           xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
-          yValueMapper: (TagsEntity tagsEntity, _) => double.parse(
-              '${tagsEntity.temperature.substring(0, 5)}'),
+          yValueMapper: (TagsEntity tagsEntity, _) =>
+              double.parse('${tagsEntity.temperature.substring(0, 5)}'),
           // Enable data label
           dataLabelSettings: DataLabelSettings(isVisible: true))
-      )
-     );  
+    ];
+    b.forEach((key, value) => a.add(LineSeries<TagsEntity, String>(
+        name: key,
+        dataSource: value,
+        xValueMapper: (TagsEntity tagsEntity, _) => tagsEntity.date,
+        yValueMapper: (TagsEntity tagsEntity, _) =>
+            double.parse('${tagsEntity.temperature.substring(0, 5)}'),
+        // Enable data label
+        dataLabelSettings: DataLabelSettings(isVisible: true))));
     return a;
   }
 }

@@ -32,16 +32,7 @@ dev_dependencies:
 
   build_runner: ^1.10.2
   hive_generator: 0.7.1
-  flutter_launcher_icons: "^0.8.0"
-
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "images/csem_app.png"
 
 flutter:
   assets:
-    - images/csembr.png
-    - images/csem.png
-
   uses-material-design: true

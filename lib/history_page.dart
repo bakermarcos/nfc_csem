@@ -57,12 +57,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'images/csembr.png',
-              alignment: Alignment.center,
-              fit: BoxFit.contain,
-              height: MediaQuery.of(context).size.height*0.02,
-            ),
+           Text("App NFC", style: TextStyle(color: Colors.white)),
             Container(
                 padding: const EdgeInsets.only(left: 2.0),
                 child: Text('Histórico de Tags', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.028,)))
